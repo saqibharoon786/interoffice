@@ -1,10 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, Menu, Search, ShoppingCart, Sparkles, X } from "lucide-react";
-import { catalog } from "@/lib/catalog";
-import { BrandLogo } from "@/components/brand-logo";
-import { HeaderLogin } from "@/components/header-login";
-import { HeaderSocial } from "@/components/header-social";
+import { ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { StorefrontSections } from "@/components/storefront-sections";
 import arrivalsDesktop from "@/assets/interwood-05.jpg.asset.json";
@@ -28,8 +25,6 @@ const slides = [
   { title: "Coalesce collection", desktop: collectionDesktop.url, mobile: collectionMobile.url, href: "https://interwood.pk/" },
 ];
 
-const weddingHref = "https://interwood.pk/collections/wedding-packages";
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -46,11 +41,8 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [active, setActive] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [dealsOpen, setDealsOpen] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const touchStart = useRef<number | null>(null);
 
   useEffect(() => {
@@ -58,14 +50,6 @@ function Index() {
     const timer = window.setInterval(() => setActive((current) => (current + 1) % slides.length), 5000);
     return () => window.clearInterval(timer);
   }, [paused]);
-
-  useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { setOpenCategory(null); setMenuOpen(false); setSearchOpen(false); }
-    };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, []);
 
   const move = (direction: number) => setActive((current) => (current + direction + slides.length) % slides.length);
 
@@ -76,40 +60,7 @@ function Index() {
         <a href="https://interwood.pk/collections/wedding-packages">Shop Now!</a>
       </div>
 
-      <header className="site-header">
-        <div className="brand-row">
-          <Button variant="headerIcon" size="icon" className="mobile-menu-button" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X /> : <Menu />}
-          </Button>
-          <BrandLogo />
-          <div className="mobile-actions">
-            <Button variant="headerIcon" size="icon" aria-label="Search" onClick={() => setSearchOpen(!searchOpen)}><Search /></Button>
-            <HeaderLogin />
-            <a className="header-icon-link" href="https://interwood.pk/cart" aria-label="Cart"><ShoppingCart size={20} /></a>
-          </div>
-        </div>
-        <div className="navigation-row">
-          <nav className={`category-nav ${menuOpen ? "category-nav-open" : ""}`} aria-label="Main navigation">
-            <a href={weddingHref} className="featured-nav" key="wedding">Wedding Packages</a>
-            {catalog.map((category) => (
-              <div className={`nav-category ${openCategory === category.label ? "nav-category-open" : ""}`} key={category.slug} onMouseEnter={() => setOpenCategory(category.label)} onMouseLeave={() => setOpenCategory(null)}>
-                <Button variant="navCategory" aria-expanded={openCategory === category.label} aria-label={`${category.label} menu`} onClick={() => setOpenCategory(openCategory === category.label ? null : category.label)}>
-                  {category.label}<ChevronDown size={12} strokeWidth={1.7} />
-                </Button>
-                {openCategory === category.label && <div className={`nav-dropdown ${category.subs.length > 7 ? "nav-dropdown-wide" : ""}`}><Link className="nav-dropdown-all" to="/category/$" params={{ _splat: category.slug }}>Shop all {category.label} <ChevronRight size={15} /></Link>{category.subs.map((sub) => <Link to="/category/$" params={{ _splat: `${category.slug}/${sub.slug}` }} key={sub.slug}>{sub.label}</Link>)}</div>}
-              </div>
-            ))}
-            <HeaderSocial className="nav-social" />
-          </nav>
-          <div className="desktop-actions">
-            <HeaderSocial />
-            <Button variant="headerIcon" size="icon" aria-label="Search" onClick={() => setSearchOpen(!searchOpen)}><Search /></Button>
-            <HeaderLogin />
-            <a className="header-icon-link cart-link" href="https://interwood.pk/cart" aria-label="Cart"><ShoppingCart size={20} strokeWidth={1.35} /><span>0</span></a>
-          </div>
-        </div>
-        {searchOpen && <form className="search-panel" action="https://interwood.pk/search" method="get"><input name="q" aria-label="Search products" placeholder="Search products..." autoFocus /><Button variant="headerIcon" size="icon" aria-label="Submit search" type="submit"><Search /></Button><Button variant="headerIcon" size="icon" aria-label="Close search" type="button" onClick={() => setSearchOpen(false)}><X /></Button></form>}
-      </header>
+      <SiteHeader />
 
       <section className="hero-slider" aria-label="Featured collections" aria-roledescription="carousel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }} onTouchEnd={(event) => { const endX = event.changedTouches[0]?.clientX; if (touchStart.current === null || endX === undefined) return; const distance = endX - touchStart.current; if (Math.abs(distance) > 50) move(distance < 0 ? 1 : -1); touchStart.current = null; }}>
         {slides.map((slide, index) => (

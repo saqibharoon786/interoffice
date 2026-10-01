@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { LayoutDashboard, LogOut, Package, PlusCircle, Store, Tags } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Package, PlusCircle, Store, Tags, X } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
 import { clearDummySession } from "@/lib/dummy-auth";
 
@@ -23,6 +24,7 @@ function AdminLayout() {
   const { user } = Route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [navOpen, setNavOpen] = useState(false);
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -40,9 +42,14 @@ function AdminLayout() {
 
   return (
     <div className="admin-shell">
-      <aside className="admin-sidebar">
-        <BrandLogo className="admin-logo" />
-        <nav>
+      <aside className={`admin-sidebar ${navOpen ? "admin-sidebar-open" : ""}`}>
+        <div className="admin-top">
+          <BrandLogo className="admin-logo" />
+          <button type="button" className="admin-burger" aria-label={navOpen ? "Close admin menu" : "Open admin menu"} onClick={() => setNavOpen(!navOpen)}>
+            {navOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+        <nav onClick={() => setNavOpen(false)}>
           {links.map(({ to, label, icon: Icon, exact }) => (
             <Link key={to} to={to} activeOptions={{ exact }} activeProps={{ className: "admin-link admin-link-active" }} inactiveProps={{ className: "admin-link" }}>
               <Icon size={17} /> {label}

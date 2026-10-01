@@ -3,9 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Home } from "lucide-react";
 import { catalog, getCategoryPage, type CatalogSub, type CategoryPageData } from "@/lib/catalog";
 import { fetchDbProducts, type DbProduct } from "@/lib/shop-products";
-import { BrandLogo } from "@/components/brand-logo";
-import { HeaderLogin } from "@/components/header-login";
-import { HeaderSocial } from "@/components/header-social";
+import { SiteHeader } from "@/components/site-header";
 
 const money = (amount: number) => `Rs.${amount.toLocaleString("en-PK")}`;
 
@@ -40,12 +38,7 @@ function CategoryPage() {
 
   return (
     <main className="site-shell">
-      <header className="site-header">
-        <div className="brand-row">
-          <BrandLogo />
-          <div className="category-header-tools"><HeaderSocial /><HeaderLogin /></div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/"><Home size={13} /> Home</Link>
