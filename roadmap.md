@@ -1,0 +1,10 @@
+- [x] Add reference-matched product sections beneath the hero.
+- [x] Add a tasteful animated collection section and footer.
+- [x] Add usable desktop and mobile navbar dropdowns.
+- [x] Verify desktop and mobile preview and interactions.
+- [x] Admin panel core: auth, products list/upload/delete, categories, cloud storage.
+- [ ] Show uploaded (database) products on category pages.
+- [ ] Style the admin panel and login page to match the site.
+- [ ] Add a login link to the website header.
+- [ ] Test the full flow (upload → category page) on desktop and mobile.
+- [ ] Investigate the two pre-existing technical errors the user mentioned.
