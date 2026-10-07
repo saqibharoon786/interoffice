@@ -1,7 +1,7 @@
 const links = [
   {
     label: "Inter Office on Instagram",
-    href: "https://www.instagram.com/",
+    href: "https://www.instagram.com/innocentarman142?stkn=ejZhbnBnYnhkdmpo&utm_source=qr",
     className: "social-instagram",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -11,7 +11,7 @@ const links = [
   },
   {
     label: "Inter Office on Facebook",
-    href: "https://www.facebook.com/",
+    href: "https://www.facebook.com/share/1HuWgkuQkQ/?mibextid=wwXIfr",
     className: "social-facebook",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -21,7 +21,7 @@ const links = [
   },
   {
     label: "Inter Office on TikTok",
-    href: "https://www.tiktok.com/",
+    href: "https://www.tiktok.com/@interoffice3",
     className: "social-tiktok",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -37,7 +37,7 @@ export function HeaderSocial({ className = "" }: { className?: string }) {
   return (
     <div className={`header-social ${className}`.trim()}>
       {links.map((item) => (
-        <a key={item.label} href={item.href} className={item.className} target="_blank" rel="noreferrer" aria-label={item.label}>
+        <a key={item.label} href={item.href} className={item.className} target="_blank" rel="noopener noreferrer" aria-label={item.label}>
           {item.icon}
         </a>
       ))}
